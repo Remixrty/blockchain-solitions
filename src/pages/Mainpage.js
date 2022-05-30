@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../App.css'
 import Graphic from '../graph/Graphic';
+import Wallet from './Wallet';
+import { Link, useNavigate } from 'react-router-dom' 
 
 export default function Mainpage() {
     const [coin, setCoin] = useState(true)
@@ -9,7 +11,6 @@ export default function Mainpage() {
     const baseUrl = 'https://min-api.cryptocompare.com/data/v2/histoday?'
 
     useEffect(() => {
-        console.log(coin);
         const getData = async () => {
             if (coin === true) {
                 const setData = await axios.get(baseUrl + 'fsym=BTC&tsym=ETH&limit=13')
@@ -43,7 +44,8 @@ export default function Mainpage() {
                                         check prices for the most <br />popular crypto-tokens, or buy them at a price without margin.
                                     </div>
                                     <div className='buttonMain'>
-                                        <div className='wBh'>Get started</div>
+                                        <div className='wBh'>
+                                            <Link to={'/wallet'} style={{ textDecoration: 'none', color: 'inherit' }}>Buy coins now</Link></div>
                                     </div>
 
                                 </div>
