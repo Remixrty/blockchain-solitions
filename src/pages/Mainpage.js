@@ -3,7 +3,7 @@ import axios from 'axios';
 import '../App.css'
 import Graphic from '../graph/Graphic';
 import Wallet from './Wallet';
-import { Link, useNavigate } from 'react-router-dom' 
+import { Link, useNavigate } from 'react-router-dom'
 
 export default function Mainpage() {
     const [coin, setCoin] = useState(true)
@@ -43,10 +43,12 @@ export default function Mainpage() {
                                     <div className='medText'>
                                         check prices for the most <br />popular crypto-tokens, or buy them at a price without margin.
                                     </div>
-                                    <div className='buttonMain'>
-                                        <div className='wBh'>
-                                            <Link to={'/wallet'} style={{ textDecoration: 'none', color: 'inherit' }}>Buy coins now</Link></div>
-                                    </div>
+                                    <Link to={'/wallet'} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                        <div className='buttonMain'>
+                                            <div className='wBh'>
+                                                Buy coins now</div>
+                                        </div>
+                                    </Link>
 
                                 </div>
                                 <div className='graph'>
