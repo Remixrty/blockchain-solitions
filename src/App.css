@@ -321,10 +321,31 @@ body {
 .buttonChange {
   margin-top: 49px;
   margin-left: 110px;
+  margin-right: 0px;
   padding: 0px;
   width: 205px;
   height: 205px;
   background-image: url(../public/img/change.svg);
   background-repeat: no-repeat;
   cursor: pointer;
+}
+
+.mainInfo {
+  display: flex;
+  width: 810px;
+  justify-content: space-between;
+}
+
+.pie {
+  width: 350px;
+}
+
+.exRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dropdown {
+  margin-top: 20px;
+  margin-right: 24px;
 }

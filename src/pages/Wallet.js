@@ -1,5 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { Doughnut } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+
+ChartJS.register(
+    Tooltip,
+    ArcElement,
+    Legend
+)
 
 export default function Wallet() {
     const baseUrl = 'https://min-api.cryptocompare.com/data/price?'
@@ -17,6 +25,34 @@ export default function Wallet() {
     const [drop, setDrop] = useState('USD')
     const [dropdown, setDropdown] = useState('BTC')
     const [changeState, setChangeState] = useState(false)
+
+
+    const data = {
+        labels: [
+            'USD',
+            'BTC',
+            'ETH'
+        ],
+        datasets: [{
+
+            data: [usd, (btc * btcusd), (eth * ethusd)],
+            backgroundColor: [
+                'rgb(205, 205, 205)',
+                'rgb(155, 155, 155)',
+                'rgb(105, 105, 105)'
+            ],
+            hoverOffset: 4
+        }]
+    };
+
+    const options = {
+        maintainAspectRatio: false,
+        legend: {
+            labels: {
+                fontSize: 25
+            }
+        }
+    }
 
     useEffect(() => {
 
@@ -75,10 +111,10 @@ export default function Wallet() {
     useEffect(() => {
         if (drop == 'USD' && dropdown == 'BTC') { setReceiveValue(parseFloat(currentValue) / parseFloat(btcusd)); setCurrentCoin(usd) }
         if (drop == 'USD' && dropdown == 'ETH') { setReceiveValue(parseFloat(currentValue) / parseFloat(ethusd)); setCurrentCoin(usd) }
-        if (drop == 'BTC' && dropdown == 'ETH') { setReceiveValue(parseFloat(currentValue) / parseFloat(ethbtc));setCurrentCoin(btc) }
-        if (drop == 'BTC' && dropdown == 'USD') { setReceiveValue(parseFloat(currentValue) * parseFloat(btcusd));setCurrentCoin(btc) }
-        if (drop == 'ETH' && dropdown == 'BTC') { setReceiveValue(parseFloat(currentValue) * parseFloat(ethbtc));setCurrentCoin(eth) }
-        if (drop == 'ETH' && dropdown == 'USD') { setReceiveValue(parseFloat(currentValue) * parseFloat(ethusd));setCurrentCoin(eth) }
+        if (drop == 'BTC' && dropdown == 'ETH') { setReceiveValue(parseFloat(currentValue) / parseFloat(ethbtc)); setCurrentCoin(btc) }
+        if (drop == 'BTC' && dropdown == 'USD') { setReceiveValue(parseFloat(currentValue) * parseFloat(btcusd)); setCurrentCoin(btc) }
+        if (drop == 'ETH' && dropdown == 'BTC') { setReceiveValue(parseFloat(currentValue) * parseFloat(ethbtc)); setCurrentCoin(eth) }
+        if (drop == 'ETH' && dropdown == 'USD') { setReceiveValue(parseFloat(currentValue) * parseFloat(ethusd)); setCurrentCoin(eth) }
         if (drop === dropdown) { setReceiveValue(parseFloat(currentValue)) }
 
     }, [currentValue])
@@ -165,9 +201,10 @@ export default function Wallet() {
                                     <div className='exchange'>
                                         <div className='spend' id='spend'>
                                             Spend:<br />
+                                            <div className='exRow'>
                                             <input type='number' step='0.01' className='superInput' onChange={e => setCurrentValue(e.target.value)} placeholder={currentValue > 0 ? currentValue : '0.00-' + currentCoin.toFixed(2)} />
                                             <div className="dropdown">
-                                                <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <button className="btn dropdown-toggle btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                     {drop}
                                                 </button>
                                                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -176,20 +213,25 @@ export default function Wallet() {
                                                     <li><a className="dropdown-item" onClick={() => setDrop('ETH')}>ETH</a></li>
                                                 </ul>
                                             </div>
+                                            </div>
                                         </div>
                                         <div className='spend'>
                                             Receive:<br />
+                                            <div className='exRow'>
                                             <input type='number' step='0.01' className='superInput' onChange={e => setReceiveValue(e.target.value)} placeholder={receiveValue > 0 ? receiveValue : '0.00'} />
-                                            <div className="dropdown">
-                                                <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    {dropdown}
-                                                </button>
-                                                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                    <li><a className="dropdown-item" onClick={() => setDropdown('USD')}>USD</a></li>
-                                                    <li><a className="dropdown-item" onClick={() => setDropdown('BTC')}>BTC</a></li>
-                                                    <li><a className="dropdown-item" onClick={() => setDropdown('ETH')}>ETH</a></li>
-                                                </ul>
+                                            
+                                                <div className="dropdown">
+                                                    <button className="btn dropdown-toggle btn-secondary" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        {dropdown}
+                                                    </button>
+                                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                        <li><a className="dropdown-item" onClick={() => setDropdown('USD')}>USD</a></li>
+                                                        <li><a className="dropdown-item" onClick={() => setDropdown('BTC')}>BTC</a></li>
+                                                        <li><a className="dropdown-item" onClick={() => setDropdown('ETH')}>ETH</a></li>
+                                                    </ul>
+                                                </div>
                                             </div>
+
                                         </div>
                                     </div>
 
@@ -207,9 +249,18 @@ export default function Wallet() {
                                             <div className='ciphrW'>{eth.toFixed(8)}</div> ETH
                                         </div><br />
                                     </div>
-                                    <div className='buttonChange' onClick={() => checkData()}>
+                                    <div className='mainInfo'>
+                                        <div className='buttonChange' onClick={() => checkData()}>
 
+                                        </div>
+                                        <div className='pie'>
+                                            <Doughnut
+                                                data={data}
+                                                options={options} />
+                                        </div>
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
